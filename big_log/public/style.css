@@ -59,6 +59,11 @@ body, html {
         background: transparent;
     }
 
+.footer {
+    font-size: 1rem;
+    height: 3em;
+}
+
 .entries {
     display: inline-block;
 }
