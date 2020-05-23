@@ -12,4 +12,5 @@ app.get("/", (req, res) => res.redirect("/home"));
 app.get("/home", (req, res)    => res.render("home"));
 app.get("/welcome", (req, res) => res.render("welcome"));
 app.get("/school", (req, res)  => res.render("school"));
+app.get("/poem", (req, res)    => res.render("poem"));
 app.listen(port);
