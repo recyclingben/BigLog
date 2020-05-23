@@ -1,0 +1,116 @@
+body, html {
+    font-size: 16px;
+    font-family: "Roboto Mono";
+
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+    @media not screen and (min-width: 1024px) {
+        body, html {
+            font-size: 14px;
+        }
+    }
+
+*, *:before, *:after {
+    text-align: left;
+
+    box-sizing: inherit;
+}
+
+.button {
+    color: black;
+    background: transparent;
+    text-decoration: none;
+    cursor: hand;
+
+    border-width: 0;
+    padding: 0;
+}
+    .button:focus {
+        outline: none;
+    }
+    .button:visited {
+        color: black;
+    }
+.button--major {
+    font-size: 1.3rem;
+}
+
+.header {
+    font-size: 1rem;
+
+    position: sticky;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    width: 100%;
+    padding: 1.3em;
+}
+    .header__icon { }
+    .header__item { }
+        .header__item + .header__item {
+            padding-left: 0.5em;
+        }
+    .header__fill {
+        flex-grow: 1;
+
+        background: transparent;
+    }
+
+.entries {
+    display: inline-block;
+}
+    .entry {
+        font-size: 1.2em;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: hand;
+
+        display: block;
+
+        margin-top: 0.2em;
+    }
+        .entry:focus {
+            outline: none;
+        }
+        .entry:visited {
+            color: black;
+        }
+
+.content {
+    /* We center content because if we have an inline element like entries, we want to center that.
+       Otherwise it can be a block element and we won't know the difference.*/
+    text-align: center;
+    font-size: 1rem;
+
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-left: 20vw;
+    padding-right: 20vw;
+}
+    @media not screen and (min-width: 1024px) {
+        .content {
+            padding-left: 10vw;
+            padding-right: 10vw;
+        }
+    }
+    .content__heading { }
+    .content__subheading {
+        font-size: 1.5rem;
+        text-indent: 1rem;
+
+        margin-bottom: 0.1em;
+    }
+    .content__preface {
+        color: #777;
+        font-style: italic;
+        text-align: justify;
+
+        margin: 0 0 1em 0;
+    }
+    .content__paragraph {
+        text-indent: 1rem;
+        padding-top: 0.5em;
+    }
