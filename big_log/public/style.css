@@ -123,3 +123,17 @@ body, html {
     .content__paragraph-block {
         padding-top: 0.5em;
     }
+    .content__code {
+        font-size: 1rem;
+        font-family: "Courier New";
+        line-height: 1.5em;
+        white-space: pre;
+        background-color: #eee;
+
+        text-overflow: clip;
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        padding: 0em 1em;
+        margin-top: 0.5em;
+    }

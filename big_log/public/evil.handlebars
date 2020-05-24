@@ -1,0 +1,78 @@
+<div class="content">
+    <div class="content__paragraph">
+        Every once in a while, one will come across code which is so bad, so astoundingly stupid, that one has to wonder
+        if the developer who wrote it was tremendously evil, tremendously dumb, or some unholy cocktail
+        of the two.
+    </div>
+    <div class="content__paragraph">
+        I have one such example of such code here today. It's some C++ code I wrote up a
+        few months ago because I felt like it. Try and guess what it's doing:
+    </div>
+    <div class="content__code">
+#define XXXXXX(...)           \
+    int XXXXXX_increment = 0; \
+    std::function&ltvoid ()&gt f; \
+                              \
+    for                       \
+    (                         \
+    ;                         \
+    ++XXXXXX_increment != 2;  \
+    std::thread(f).detach()   \
+    )                         \
+    f = __VA_ARGS__
+    </div>
+    <div class="content__paragraph">
+        If you were successful in figuring out what this code does, congratulations! On a grading scale of
+        Python startup to enterprise Java, you get a C++. In any regards, the code is relatively simple assuming
+        you have a basic understand of C/++ macros.
+    </div>
+    <div class="content__paragraph">
+        Alrighty, here's my pitch: When working in C++, you'll often have to start and detach threads, which will
+        look something like this:
+    </div>
+    <div class="content__code">
+std::thread t([&] () {
+    std::cout << "What do you call a duck with two legs?" << std::endl;
+});
+    </div>
+    <div class="content__paragraph">
+        What an unreadable mess of boilerplate! It would be so much better if we could do something that
+        looked like this:
+    </div>
+    <div class="content__code">
+DETACH([&]) {
+    std::cout << "A duck!" << std::endl;
+};
+    </div>
+    <div class="content__paragraph">
+        Isn't that so much better?
+    </div>
+    <div class="content__paragraph">
+        Of course, if we want to have syntax like that we'll need to write a macro which, chronologically,
+        calls a function before setting it, hence the need for a for loop.
+    </div>
+    <div class="content__paragraph">
+        If you're still confused, that's okay. We're calling this code bad for a reason. If there's one
+        thing you should take away from this, it's DON'T WRITE CODE LIKE THIS! Even without the obvious corner cases
+        you'll come across while working with this (try using two sharing the same scope!), trading simplicity for
+        brevity is almost always a bad deal.
+    </div>
+    <div class="content__paragraph">
+        If you're still confused, that's okay. We're calling this code bad for a reason. If there's one
+        thing you should take away from this, it's DON'T WRITE CODE LIKE THIS! Trading simplicity for
+        brevity is almost always a bad deal.
+    </div>
+    <div class="content__paragraph-block">
+        ...
+    </div>
+    <div class="content__code">
+DETACH([&]) {
+    TRYDEBUG(Entered detached state)
+    LOCK (GLOBAL_RUNNING_FLAG_GET_LOCK(B)) {
+        EXITIF(GLOBAL_RUNNING_FLAG_SET(B))
+    };
+DETACH_EXIT()
+    TRYDEBUG(Exiting detached state)
+} SEMICOLON
+    </div>
+</div>
