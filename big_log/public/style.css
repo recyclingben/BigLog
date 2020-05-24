@@ -113,9 +113,16 @@ body, html {
     }
     .content__paragraph {
         text-indent: 1rem;
+
         padding-top: 0.5em;
     }
     .content__paragraph-block {
+        white-space: pre;
+
+        text-overflow: clip;
+        overflow-x: auto;
+        overflow-y: hidden;
+
         padding-top: 0.5em;
     }
     .content__code {
