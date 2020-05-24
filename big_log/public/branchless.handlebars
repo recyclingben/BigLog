@@ -1,0 +1,121 @@
+<div class="content">
+    <h1 class="content__heading">
+        Adventures in Branchless Computing
+    </h1>
+    <h2 class="content__subheading">
+        The Problem
+    </h2>
+    <div class="content__paragraph">
+        A few weeks ago, just for the sake of it, I decided to try my hand at branchless computation. The problem
+        was simple: I wanted to subtract an unsigned integer by 1, with a lower bound of 0. Simple enough. In C,
+        this code would look a little like this:
+    </div>
+    <div class="content__code">
+uint16_t num;
+num = x;
+if (num > 0)
+    --num;
+    </div>
+    <div class="content__paragraph">
+        For any sane developer, this would be the end of the story. Unfortunately, this is not a demographic
+        I fit into, and thus I set unto the task of removing that if statement--even if at the cost of my own
+        life.
+    </div>
+    <h2 class="content__subheading">
+        The Process
+    </h2>
+    <div class="content__paragraph">
+        I start by asking myself: What fundamental difference is there between subtracting 1 from 0 and subtracting
+        1 from any other number? Most obviously, the number would underflow. All we need is a means of
+        "checking" whether or not the resulting number had underflowed after subtracting. "Checking" is in
+        quotes because, without branches, we can't use
+        if statements; instead we will have to develop a sequence of steps which gives us the desired effect
+        without use of conditionals.
+    </div>
+    <div class="content__paragraph">
+        Let's for a second entertain the idea that we somehow have a boolean value indicating whether or
+        not the resulting operation underflowed:
+    </div>
+    <div class="content__code">
+bool underflowed;
+underflowed = y;
+    </div>
+    <div class="content__paragraph">
+        Because we are only subtracting by one, we can add the boolean to our unsigned integer such that,
+        if the value underflows, we will roll back to our previous state.
+    </div>
+    <div class="content__code">
+uint16_t num;
+bool underflowed;
+
+num = x;
+--num;
+underflowed = y;
+
+num += underflowed;
+    </div>
+    <div class="content__paragraph">
+        The new question is: How we could possibly store a boolean indicating if we've underflowed? This is
+        easier than you might expect. What if, instead of subtracting from a 16-bit integer, we instead
+        subtract from a 32-bit integer? The lower-order 16 bits could be our value as we had before,
+        while the lower-order 16 bits could be the underflow indicator. Assuming the underflow
+        indicator == 1, if we subtract from the 32-bit integer and the lower order 16 bits would
+        underflow, the underflow indicator would be == 0. Thus, we have a boolean indicating whether or not
+        the operation on the 16-bit integer would have underflowed. (Note that the underflow indicator would
+        indicate that the operation had _not_ underflowed, unlike in our example earlier.)
+    </div>
+    <h2 class="content__subheading">
+        The Implementation
+    </h2>
+    <div class="content__paragraph">
+        Now that we have all of our pieces, let's put them together. We'll start by setting up a system for
+        accessing a 32-bit integer as two individual 16-bit integers:
+    </div>
+    <div class="content__code">
+#define offset(of, by) ((void *)((char *)of + by))
+
+/* Lo/hi may be in different spots, depending on endianness. */
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define uint_32_16_hi_16(ptr) ((uint16_t *)offset(ptr, 2))
+#define uint_32_16_lo_16(ptr) ((uint16_t *)ptr)
+#else
+#define uint_32_16_hi_16(ptr) ((uint16_t *)ptr)
+#define uint_32_16_lo_16(ptr) ((uint16_t *)offset(ptr, 2))
+#endif
+
+/* We need a union to obey strict aliasing. */
+typedef union {
+    uint32_t int_32;
+    uint16_t int_16;
+} uint_32_16;
+    </div>
+    <div class="content__paragraph">
+        Then we can create a function which decrements the low 16 bits, reverting the changes if the high
+        16 bits == 0, indicating an underflow. Finally, we will set the high 16 bits == 1 to reset it for
+        the next time.
+    </div>
+    <div class="content__code">
+void decrement_unless_underflow(uint_32_16 *n)
+{
+    *uint_32_16_hi_16(n) = 1;                     /* You would normally only do this on initialization. */
+
+    --n->int_32;                                  /* 1. Decrement. */
+    *uint_32_16_lo_16(n) -= *uint_32_16_hi_16(n); /* 2. Revert if underflowed. */
+    *uint_32_16_lo_16(n) += 1;
+    *uint_32_16_hi_16(n) = 1;                     /* 3. Reset for next time. */
+}
+    </div>
+    <div class="content__paragraph">
+        Voila! We've just created a system for decrementing a value by one unless it were to underflow. All
+        that is left is for me to, as usual, beg you to do stuff like this very, very sparingly. I heavily
+        doubt there is a situation in which saving this branch provides any benefit, much less any
+        <span style="font-style: italic">sizable</span> benefit.
+    </div>
+    <div class="content__paragraph">
+        But hey, that's just a theory...
+    </div>
+    <div style="height: 400px"></div>
+    <div class="content__paragraph">
+        <span style="font-style: italic">...A GAME THEORY!</span>
+    </div>
+</div>
