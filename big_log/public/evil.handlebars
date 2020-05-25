@@ -37,6 +37,7 @@
 std::thread t([&] () {
     std::cout << "What do you call a duck with two legs?" << std::endl;
 });
+t.detach();
     </div>
     <div class="content__paragraph">
         What an unreadable mess of boilerplate! It would be so much better if we could do something that
