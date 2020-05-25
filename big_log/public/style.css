@@ -5,6 +5,8 @@ body, html {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+
+    overflow-x: hidden;
 }
 
 *, *:before, *:after {
@@ -28,20 +30,19 @@ body, html {
     .button:visited {
         color: black;
     }
-.button--major {
-    font-size: 1.3rem;
+.button--icon > img {
+    height: 3em;
 }
 
 .header {
     font-size: 1rem;
 
-    position: sticky;
     display: flex;
     flex-direction: row;
     justify-content: center;
 
-    width: 100%;
-    padding: 1.3em;
+    width: 100vw;
+    padding-top: 1.6em;
 }
     .header__icon { }
     .header__item { }
