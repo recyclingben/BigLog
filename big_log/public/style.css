@@ -42,7 +42,7 @@ body, html {
     justify-content: center;
 
     width: 100vw;
-    padding-top: 1.6em;
+    padding: 1.6em 0 1em 0;
 }
     .header__icon { }
     .header__item { }
