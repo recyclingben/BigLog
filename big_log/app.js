@@ -15,4 +15,5 @@ app.get("/school", (req, res)     => res.render("school",     { title: "Why I Do
 app.get("/poem", (req, res)       => res.render("poem",       { title: "CSS" }));
 app.get("/evil", (req, res)       => res.render("evil",       { title: "Please Don't Do This" }));
 app.get("/branchless", (req, res) => res.render("branchless", { title: "Adventures in Branchless Computing" }));
+app.get("/rps", (req, res)        => res.render("rps",        { title: "Building Rock Paper Scissors 2 From the Ground Up"}));
 app.listen(port);

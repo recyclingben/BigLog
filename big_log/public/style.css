@@ -140,3 +140,7 @@ body, html {
         padding: 0em 1em;
         margin-top: 0.5em;
     }
+    .content__svg {
+        max-width: 100%;
+        height: auto;
+    }
